@@ -55,16 +55,44 @@ char *getProperty(const char *filePath, const char *queryString) {
 	return (char *)desired;
 }
 
+char *substring(int i,int j,char *ch)
+{
+    int n,k=0;
+    char *ch1;
+    ch1=(char*)malloc((j-i+1)*1);
+    n=j-i+1;
+
+    while(k<n)
+    {
+        ch1[k]=ch[i];
+        i++;k++;
+    }
+
+    return (char *)ch1;
+}
+
 int main() {
 
 	char *cpuName = getProperty("/proc/cpuinfo", "model name");
 	printf("CPU:%s", cpuName);
 	free(cpuName);
 
+	FILE *fptr;
+	fptr = fopen("/proc/version", "r");
 
-
+	char s[100];
 	
+	fgets(s, 100, fptr);
 
+	char *version = substring(strlen("Linux version "), strlen(s), s);
+	int i = 0;
+	char ch[100];
+	while ((char)version[i] != " ") {
+		ch[i] = version[i];
+		i++;
+	}
+	printf("Version: %s", s);
+	free(version);
 
 	return 0;
 }
